@@ -3,15 +3,8 @@ The goal of the project was to train a neural network to recognize whether or no
 
 First, I fix the name of the model. If the model name is non-existent, then a new model with the provided name is created automatically.
 Then I fix the training set and the test set, which I chose to be the set of artificially cretaed pictures (Code see "augmented" file), as well as the number of training sessions.
-Next, the used data needs to be normalized.
+Next, the used data needs to be normalized. A new (empty) list for the training-data is created (as a list of batches) as well as a target list, such that the pictured can be labelled.
 
-
-
-
-
-
-train_data_list=[] #erstellen die (noch leere) Liste mit den Trainingsdaten
-target_list = [] #... und die Target (Label) Liste, damit wir die Bilder mit Labels versehen können
 train_data=[]  #wird zu einer Liste aus batches
 files = listdir(imagesdirpath) #hier habe ich anfangs den Fehler gemacht, das zip-file nicht zu entpacken, daher hat es den Pfad nicht erkannt
 for i in files:
