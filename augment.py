@@ -12,7 +12,7 @@ from os import path
 #parser = argparse.ArgumentParser()
 #parser.add_argument('--imagesdir', help='imagesdir IMAGESDIR', required=True)
 #parser.add_argument('--outputdir', help='outputdir OUTPUTDIR', required=True)
-#parser.add_argument('--imgnum', help='imgnum IMGNUM', required=True, type=int) #not more than 1 million
+#parser.add_argument('--imgnum', help='imgnum IMGNUM', required=True, type=int)
 #args = parser.parse_args()
 
 imagesdir = "./Train"
@@ -44,15 +44,14 @@ seq = iaa.Sequential(([
         iaa.PerspectiveTransform(scale=(0.03, 0.03))
     ]))
 
-imgnum = len(listdir(outputdir)) + imagenumber #check how many in directory and add more
-#AUGMETATION PROCESSING AND SAVING
+imgnum = len(listdir(outputdir)) + imagenumber
 print("Image augmentation started!")
 while len(listdir(outputdir)) < imgnum:
     images_aug = seq.augment_images(images)
     for o,a in zip(images_aug, namelist):
         if len(listdir(outputdir)) < imgnum:
-            num = random.randint(1, 999999) #random number
-            while (outputdir + '/aug_' + str(num) + '.bmp') in listdir(outputdir): num = random.randint(1, 999999) #check if random number was used
-            cv2.imwrite(outputdir + '/aug_' + str(num) + '_' + a + '.bmp', o) #start augmenting and save augmented image
+            num = random.randint(1, 999999)
+            while (outputdir + '/aug_' + str(num) + '.bmp') in listdir(outputdir): num = random.randint(1, 999999)
+            cv2.imwrite(outputdir + '/aug_' + str(num) + '_' + a + '.bmp', o)
         else: break
 print("Image augmentation finished!")
