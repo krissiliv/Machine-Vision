@@ -3,19 +3,11 @@ The goal of the project was to train a neural network to recognize whether or no
 
 First, I fix the name of the model. If the model name is non-existent, then a new model with the provided name is created automatically.
 Then I fix the training set and the test set, which I chose to be the set of artificially cretaed pictures (Code see "augmented" file), as well as the number of training sessions.
-Next, the used data needs to be normalized. A new (empty) list for the training-data is created (as a list of batches) as well as a target list, such that the pictured can be labelled.
+Next, the used data needs to be normalized. A new (empty) list for the training-data is created (as a list of batches) as well as a target list, such that the pictured can be labelled. 
+I fix the directory and make sure that there is no unnecessary ".ini" file in it (due to the augmentor that I used). 
+files = listdir(imagesdirpath) #hier habe ich anfangs den Fehler gemacht, das zip-file nicht zu entpacken, daher hat es den Pfad nicht erkannt.
+If the model does not already exist, then a model has to be created. It should obtain a list with all files, take a random element out of it (remove it from the list such that it is not used again), open this element (file), transform it to the grayscale and then to a tensor (to make it possible for the neural network to work with it). Subsequently the obtianed tensor is added to the training list.
 
-train_data=[]  #wird zu einer Liste aus batches
-files = listdir(imagesdirpath) #hier habe ich anfangs den Fehler gemacht, das zip-file nicht zu entpacken, daher hat es den Pfad nicht erkannt
-for i in files:
-    if ".ini" in i: files.remove(i) #Da ich wegen dem Augmentor ein paar Mal eine Fehlermeldung bekommen habe, weil er ein Unbekanntes "Bild" .ini auch erzeugt hatte
-if path.exists(modelpath) is False: #das Modell kreieren wir nur, wenn es noch nicht existiert:
-    for idx, i in enumerate(range(len(files)-1), start=1):  #liefert mir Liste mit allen Dateinamen zurück
-        f = random.choice(files) # liefert zufälliges element aus der files Liste -- wenn wir nur das haben, kann es passieren, dass wir immer dasselbe Element bekommen. Darum:
-        files.remove(f) # müssen f aus den files removen, nachdem es schon gewählt wurde
-        img = Image.open(imagesdirpath + "/" + f).convert('RGB') # wir öffnen das gewählte Bild und speichern es als array
-        img = transforms.functional.to_grayscale(img) #Grayscale wegen RAM
-        img_tensor = transform(img) #das Bild in einen Tensor transformieren, damit nn damit arbeiten kann (Tensoren sind eine Verallgemeinerung von Matrizen und werden durch n-dimensionale arrays repräsentiert)
         train_data_list.append(img_tensor) #nachdem das Bild jetzt prepariert ist, wird es in die Trainingsliste hinzugefügt
         HatRiss = 1 if 'NG' in f else 0  #jetzt definieren wir die Targets: Die Abbilddung "Hatriss" gibt 1 aus, wenn im Bildnamen NG steht, sonst 0
         HatkeinenRiss = 1 if 'OK' in f else 0 #das zweite Target: die Abbildung "HatkeinenRisss" macht genau das Umgekehrte
