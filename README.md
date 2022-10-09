@@ -8,7 +8,8 @@ I fix the directory and make sure that there is no unnecessary ".ini" file in it
 files = listdir(imagesdirpath) #hier habe ich anfangs den Fehler gemacht, das zip-file nicht zu entpacken, daher hat es den Pfad nicht erkannt.
 If the model does not already exist, then a model has to be created. It should obtain a list with all files, take a random element out of it (remove it from the list such that it is not used again), open this element (file), transform it to the grayscale and then to a tensor (to make it possible for the neural network to work with it). Subsequently the obtianed tensor is added to the training list.
 
-        train_data_list.append(img_tensor) #nachdem das Bild jetzt prepariert ist, wird es in die Trainingsliste hinzugefügt
+Now it needs to be fixed what the 
+
         HatRiss = 1 if 'NG' in f else 0  #jetzt definieren wir die Targets: Die Abbilddung "Hatriss" gibt 1 aus, wenn im Bildnamen NG steht, sonst 0
         HatkeinenRiss = 1 if 'OK' in f else 0 #das zweite Target: die Abbildung "HatkeinenRisss" macht genau das Umgekehrte
         target = [HatRiss, HatkeinenRiss] #das soll dann also der Output (besteht also aus 2 Neuronen)/das Target sein.
