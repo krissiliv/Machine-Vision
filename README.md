@@ -21,25 +21,15 @@ Then the model is created as a new network.
 
 The learning rate is defined (can be interpreted as the "step size").
 
-Then the training process is defined: the above defined model is set to trainmode. 
+Then the training process is defined: the above defined model is set to trainmode. Each picture is transformed into a tensor. The data and the target are both taken as a variable. The optimizer "zero gard(ient)" is used.  The output will be the data which "ran" through the above defined model. And the loss should be calculated as the criterion of output and target. It should be back-propagated (back propagation of loss) and then the optimizer should take a step (it should act).
+
+The epoch number (number of the training-process) is defined as "epoch_num".
+
+The as a precaution, it is checked, whether or not the model already exists (if it was already trained). If yes, the existing model is used, if not, a new model is created.
 
 
-def train(epoch): #jetzt wird definiert, was im Training passieren soll:
-    model.train() #model auf train setzen, damit es auch wirklich trainiert wird und nicht nur ausgeführt
-    for idx, (data, target) in enumerate(train_data): #wenn der Index vom gewählten Bild in der Nummerierung der in Zeile 90 (train_data.append) definierten Batchliste ist, dann:
-        target = torch.Tensor(target) #wird wieder einen Tensor draus gemacht, damit das nn damit arbeiten kann
-        data = Variable(data) ##1.Batch entry: data (also das Bild) wird als Variable genommen
-        target = Variable(target) #2.Batch entry: data und target müssen ja immer noch als Variablen verarbeitet werden
-        optimizer.zero_grad() ## Gradient descent
-        out = model(data) #output soll der output vom definierten Modell (in der Klasse Netz) sein, wenn man data reinfüttert
-        criterion = F.binary_cross_entropy #das Kriterium ist,dass die Bilder ja in zwei Klassen unterteilt werden sollen
-        loss = criterion(out, target) ## Loss soll als criterion von output und target berechnet werden
-        loss.backward() ## Loss soll back - propagatet werden
-        optimizer.step() # wollen unseren Optimizer sagen, dass er etwas tun soll
-        
-## Optimizer zero grad sucht die stelle, an der der Gradient = 0 ist?
 
-epoch_num = range(0,int(epochs))
+
 
 if path.exists(modelpath) == False: #man schaut, ob unsere Model schon trainiert ist, dh ob es existiert
     for idx, epoch in enumerate(epoch_num, start=1): #man will 30 epcohen lang trainieren, falls es noch nicht existiert
