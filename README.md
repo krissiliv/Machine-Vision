@@ -25,52 +25,13 @@ Then the training process is defined: the above defined model is set to trainmod
 
 The epoch number (number of the training-process) is defined as "epoch_num".
 
-The as a precaution, it is checked, whether or not the model already exists (if it was already trained). If yes, the existing model is used, if not, a new model is created.
+Then it is checked, whether or not the model path already exists (if it was already trained). If yes, the existing model path is used, if not, a new model path is created. In each epoch, the model is trained and afterwards it is saved (the model path is created). If the model path does exist, the model is loaded, evaluated.
+If the trainingset is not found, the system is exited.
+If it exists, the testpictures are opened one by one, transformed into a greyscale picture due to the RAM (colour is not relevant here), then the transform function is used to transform the image into the right format. The image gets loaded, sent to the cpu-processor, re-formated into an array, then makes a n-dimensional list out of it, which gets splitted by commas. In the endresult, the first number tells us if the cookie is bad and the second one tells us if the cookie is good. If good > bad (this means the "good" entry is 1 and the "bad" entry is 0) then a "1" is added to the values. On the other hand, if the model believes that the cookie is bad (broken) then a "0" is added. This list of values is later used to check the model performance.
 
+We take this list and the testimages (where the images numbered 1-5 show broken (bad) cookies and the rest show good ones). 
+If one of these images with number 1-5 is assined the number 1, which is the representant for bad cookies, then the model has predicted the image correctly. In this case "1" is added to the results, else (if the prediction was sincorrect) "0" is added to the results. 
+The analogeous thing happens to the testimages with numbers 6-10 (the good cookies).
 
-
-
-
-if path.exists(modelpath) == False: #man schaut, ob unsere Model schon trainiert ist, dh ob es existiert
-    for idx, epoch in enumerate(epoch_num, start=1): #man will 30 epcohen lang trainieren, falls es noch nicht existiert
-        print("Epoch " + str(idx) + " out of " + str(max(epoch_num)+1) + " started!")
-        train(epoch) #und wendet dann die Funktion train an, in der das Model trainiert wird
-        print("Epoch " + str(idx) + " out of " + str(max(epoch_num)+1) + " finished!")
-    torch.save(model, modelpath) #dann wird das trainierte Modell gespeichert
-else: #sonst, falls das Model existiert,dann:
-    model = torch.load(modelpath) #wird das Modell geladen
-    model.eval() #.. evaluiert
-    vals = [] #dann wird ein Werte set erstellt
-    tests = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] #...die Testsetindices (das testset beinhaltet 10 Bilder; nummeriert von 1-10)
-    result = [] #und noch ein Lösungsset wird erstellt
-    if timagesdirpath is None: sys.exit() #falls dann kein testimageset existiert, soll das system verlassen werden
-    else: #sonst soll geprüft werden, ob man das Modell nützen kann
-        for i in listdir(timagesdirpath): # also für die Bilder aus dem Testset:
-            if ".ini" in i : continue #wie oben beschrieben: wenn .ini wieder drinnen ist dann ignorieren
-            test_img = Image.open(timagesdirpath + "/" + i) #für die anderen, richtigen Formate werden die Bilder geöffnet
-            test_img = transforms.functional.to_grayscale(test_img) #... dann in Grayscale transformiert wegen RAM
-            test_img_tensor = transform(test_img) #mit der vorher definierten Transform-Funktion in das richtige Format transformiert (wird unter Anderem zu einem Tensor)
-            loading_image = model(test_img_tensor[None, ...]) #... dann wird der Tensor zu unserem Model geschickt und dieses spuckt  
-            cpu_pred = loading_image.cpu() #und zusammen damit an den cpu-Prozessor
-            numpyresult = cpu_pred.data.numpy() #dort wird es zu einem array formatiert
-            listresult = np.ndarray.tolist(numpyresult[0]) ##formatiert den n-dim array in eine Liste um, 0 bedeutet
-            endresult = str(listresult).split(", ") ##splitet den string der Liste durch Beistriche
-            bad = endresult[0].replace("[", "") #ob das Cookie "bad"/gebrochen ist, entscheidet der erste Wert (der Index 0 im endresult hat), siehe Zeile 82
-            good = endresult[1].replace("]", "") #ob das Cookie "good" ist, entscheidet der zweite Wert (der Index 1 hat), siehe Zeile 83
-            if good > bad: vals.append(1) #wenn das Modell eher glaubt, dass das Cookie gut ist, dann füge 1 zu den Ausgabewerten (=Liste "vals") hinzu
-            else: vals.append(0) # sonst (wenn das Modell eher glaubt, dass es gebrochen ist), füge 0 hinzu 
-            #(diese Liste "vals" wird später ausgegeben, um zu sehen wie gut das Modell ist)
-        for l, f in zip(vals,listdir(timagesdirpath)): #wenn l in der Liste vals ist, und f ein Testimage, dann:
-            if ".ini" in f: continue #wie immer: wenn f ini beinhält ignorieren, sonst:
-            if int(f[:2].replace(".", "")) in [1, 2, 3, 4, 5]: ##löschen den Punkt aus dem Namen von f und prüfen, ob es ein Cookiebild mit index 1-5 ist 
-                #DIe Bilder 1-5 im Testset sind Cookies, die schlechten Cookies
-                if l == 0: result.append(1) #wenn also der Wert für l aus der "vals" Liste dann auch noch 0 ist, dann bedeutet das, dass 
-                #good<bad, also dass das Cookie wsl schlecht ist und das Bild somit richtig predicted wurde
-                else: result.append(0) #sonst wurde es schlecht predicted (falsch)
-            if int(f[:2].replace(".", "")) in [6, 7, 8, 9, 10]: #die Bilder 6-10 sind von guten Cookies, also:
-                if l == 1: result.append(1) #wenn auch der Wert l als 1 (good>bad) predicted wurde, dann lag das Modell richtig, also soll 1 ausgegeben werden
-                else: result.append(0) #sonst lag es falsch und 0 soll ausgegeben werden
-        plt.scatter(tests, result,  color='black') #jetzt wird ein scatter gebildet, der tests set in Bezug zu result bringt
-        plt.plot(tests, result, color='blue', linewidth=3) #.. damit wird ein Plot gezeichnet mit x=tests und y=result Set
-        plt.show() #... und der Plot wird ausgegeben, um zu zeigen, wie gut das Modell war
+Finally the performance of the model is plotted in order to be able to decide how good it is. The x-axis represents the test-images and the y-axis represents the outcome (whether the prediction was wrong or correct).
         
