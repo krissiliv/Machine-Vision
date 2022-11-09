@@ -8,32 +8,14 @@ I fix the directory and make sure that there is no unnecessary ".ini" file in it
 files = listdir(imagesdirpath) #hier habe ich anfangs den Fehler gemacht, das zip-file nicht zu entpacken, daher hat es den Pfad nicht erkannt.
 If the model does not already exist, then a model has to be created. It should obtain a list with all files, take a random element out of it (remove it from the list such that it is not used again), open this element (file), transform it to the grayscale and then to a tensor (to make it possible for the neural network to work with it). Subsequently the obtianed tensor is added to the training list.
 
-Now it needs to be fixed how the trainingset should be iterpreted from the model: I put a "NG" in the filename when the Waffle is broken, in this case it should be assigned the number 1.
+Now it needs to be fixed how the trainingset should be iterpreted from the model: I put a "NG" in the filename when the Waffle is not broken, in this case it should be assigned the number 1 for "HatRiss", as this is true in this case. If it is assigned the number 0 for "HatRiss" then is is not broken and has the letters "OK" in the filename. Analogeously this will hold for "HatkeinenRiss". The output (target) will be then appended to the list of "loaded images". Afterwards everything will be concluded into a final list, where the training data list is stacked to the list of outputs. So each image is assigned its output, in form of a "batch".
 
-        HatRiss = 1 if 'NG' in f else 0  #jetzt definieren wir die Targets: Die Abbilddung "Hatriss" gibt 1 aus, wenn im Bildnamen NG steht, sonst 0
-        HatkeinenRiss = 1 if 'OK' in f else 0 #das zweite Target: die Abbildung "HatkeinenRisss" macht genau das Umgekehrte
-        target = [HatRiss, HatkeinenRiss] #das soll dann also der Output (besteht also aus 2 Neuronen)/das Target sein.
-        print(target) #zeigt entweder [0,1] oder [1,0] an, ersteres wenn das target keinen Riss hat
-        target_list.append(target) #in unsere Traget Liste wird jetzt, nachdem es benannt wurde, das Traget (also die Auswertung vom random gewählten Bild) hinzugefügt
-        print("Image " + str(idx) + " out of " + str(len(listdir(imagesdirpath))-2) + " loaded!")
-        if len(train_data_list) >= (len(listdir(imagesdirpath))-2) : #Wenn in die erstellte Trainingsdatenliste größer gleich so viele Bilder hinzugefügt wurden, wie in dem von mir "eingefütterten" Trainingsbildordner" drinnen sind 
-            print("Appending data to a single list...") #dann fügen wir alles in einer "Endliste" zusammen:
-            train_data.append((torch.stack(train_data_list), target_list)) #stackt jetzt die Trainingsdatenliste und die Liste mit den Auswertungen zusammen =(Trainingsdaten, Liste) <- das hier ist dann ein batch, da sind Bilder mit Lösungen drinnen
-            train_data_list = [] #leert die Liste, die aus den Tensoren der ursprünglichen Trainingsbilder entsteht, um RAM Speicherplatz zu entlasten (die Liste wird ja jetzt nicht mehr benötigt, da sie in der gerade defninerten Liste enthalten ist)
-            print("Appending finished!")
-            
-#Jetzt kann das Neuronale Netz definiert werden:
-class Netz(nn.Module):
-    def __init__(self): #initializer Methode, initialisiert/kreiert memory space, um sich an Details über die neuen Elemente, die dann in dieser Klasse definiert werden, erinnern zu können
-        #self wird jetzt per default als ertses Argument genommen
-        super(Netz, self).__init__() #jetzt rufe ich ich die neu definierte Klasse __init__ auf (calling the class)
-        self.conv1 = nn.Conv2d(1, 2, kernel_size=5) #wird zur ersten Variable, wenn man ein Element (=instance) der__init__(self) class definiert
-        self.conv2 = nn.Conv2d(2, 4, kernel_size=5) #Da wir mit Bilder arbeiten kommen mal drei convolutional Schichten gleich als nächste Argumente in den initializer rein
-        self.conv3 = nn.Conv2d(4, 8, kernel_size=5) #Zahlen? = Dimensionen der Matrizen, die den Filter darstellen
-        self.fc1 = nn.Linear(7616, 1000) #nimmt convolution Output und gibt eine Klassifizierungsentscheidung ab
-        # = fully connected layer soll als input genau die Anzahl an Neuronen haben, die torch.Size(, ., ., .) => . mal . mal .  ausspuckt
-        self.fc2 = nn.Linear(1000, 2)
-        
+Now that the training batchset is prepared, it can be used to train the CNN, which is defined in th following:
+
+First, a memoryspace is created/initialized in order to be able to recall the details about the elements, which are defined in this class. Self is now used as the first element per default. After calling the class, the first three factors that come into the initializer are convolutional layers. The parameters that this function needs are the dimensions of the matrices, which represent the filter. Afterwards, the classification type is defined with a fully connected layer. Its input should be the number of neurons, which are the output of torch.Size(, ., ., .) => . times  . times . Afterwards, another fully connected layer is added.
+
+
+
     def forward(self, x): ##
         x = self.conv1(x)
         x = F.relu(x) #Aktivierungsfunktion, relu f(x) = mas(0,x), wobei x der input ist
