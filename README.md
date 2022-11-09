@@ -14,34 +14,15 @@ Now that the training batchset is prepared, it can be used to train the CNN, whi
 
 First, a memoryspace is created/initialized in order to be able to recall the details about the elements, which are defined in this class. Self is now used as the first element per default. After calling the class, the first three factors that come into the initializer are convolutional layers. The parameters that this function needs are the dimensions of the matrices, which represent the filter. Afterwards, the classification type is defined with a fully connected layer. Its input should be the number of neurons, which are the output of torch.Size(, ., ., .) => . times  . times . Afterwards, another fully connected layer is added.
 
+In the next steps, the relu (activation function) is used. The maxpooling in 2d, which is used afterwards is a technique to minimize the number of pixels (it takes each set of 2x2 pixels and outputs the maximum of each "block" of pixels. This process is repeated three times. The activation function is used again and afterwards the dropoutfunction, which helps to make the process/image processing more robust by destroying a random part in the activation. In that way, it has to pay attention to more than one key property instead of just one (which could be misleading). 
 
+The following softmaxfunction takes the last decision about the classification from the fully connected layer and transforms them into probabilities (with an Euler function).
+Then the model is created as a new network.
 
-    def forward(self, x): ##
-        x = self.conv1(x)
-        x = F.relu(x) #Aktivierungsfunktion, relu f(x) = mas(0,x), wobei x der input ist
-        x = F.max_pool2d(x,2) #maxpooling teilt das ganze Bild (welches aus unserem Convolutional Layer rauskommt) 
-        #in 2x2 Pixelblöcke und nimmmt als output von jedem Block das Maximum (=> verkleinert das Bild)
-        x = self.conv2(x)
-        x = F.relu(x)
-        x = F.max_pool2d(x,2)
-        x = self.conv3(x)
-        x = F.relu(x)
-        x = F.max_pool2d(x,2)    
-        x = x.view(-1, 7616) ##    -1, da der erste Wert, also die batch size, uns nicht interessiert
-        x = F.relu(self.fc1(x))
-        x = F.dropout(x) #nimmt einen random Teil der Activation und zerstört diesen. 
-        #So wird das nn gezwungen eine robustere Wiedererkennung zu erlernen und sich auf mehrere Eigenschaften des inputs gleichzeitig zu konzentrieren, anstatt immer auf dieselbe(die falsch sein könnte)
-        x = self.fc2(x)
-        return F.softmax(x, dim=1) #softmax nimmt die letztendliche Klassifizierungsentscheidung aus dem fully connected layer und wandelt diese in Wkeiten um (mithilfe der Eulerfunktion)
-        #jetzt müssen wir in unseren fully connected layer umsteigen, aber wir wissen ja nicht, wie unsere Daten in dem Fall jetzt aussehen
-        exit()
-    
-        
-#jetzt generiere ich mein model als neues Netz (Instance definieren):
-model = Netz()
+The learning rate is defined (can be interpreted as the "step size").
 
+Then the training process is defined: the above defined model is set to trainmode. 
 
-optimizer = optim.RMSprop(model.parameters(), lr = 0.001) #Festsetzung der Learning rate
 
 def train(epoch): #jetzt wird definiert, was im Training passieren soll:
     model.train() #model auf train setzen, damit es auch wirklich trainiert wird und nicht nur ausgeführt
