@@ -45,7 +45,7 @@ In Folder1, create another folder named "Test_AUGMENTED". This will be the test-
 
 Also in Folder one, create a folder named "Train" where you save a good mix between broken and not-broken objects. The more the better.
 
-
+Then you can open the Code and in line 25, you can choose which name your model should have.
 
 
         
