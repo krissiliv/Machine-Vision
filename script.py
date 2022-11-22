@@ -102,10 +102,10 @@ class Netz(nn.Module):
         x = self.conv3(x)        
         x = F.relu(x)
         x = F.max_pool2d(x,2)    
-        x = x.view(-1, 7616) # view function reshaps tensor
+        x = x.view(-1, 7616) # view function reshapes tensor
         x = F.relu(self.fc1(x))
         x = F.dropout(x) #this takes a random part of the activation and destroys it. 
-        #this forces the nn to train a more robust recogniton and concentrate on many properties of the input, instead of just one (which could be another as the one that we want (broken - not broken))
+        #this forces the nn to train a more robust recognition and concentrate on many properties of the input, instead of just one (which could be another one as the one that we want (broken - not broken))
         x = self.fc2(x)
         return F.softmax(x, dim=1) #softmax makes the final classification-decision
         #from the fully connected layer and transforms them into probabilities (with the help of an Eulerfunktion)
