@@ -49,6 +49,6 @@ while len(listdir(outputdir)) < imgnum: #as long as there are only less than "im
             num = random.randint(1, 999999) #choose a random number (it is used below to create a name for the new image)
             while (outputdir + '/aug_' + str(num) + '.bmp') in listdir(outputdir): num = random.randint(1, 999999) #check if random number was used and if so, take another one
             cv2.imwrite(outputdir + '/aug_' + str(num) + '_' + a + '.bmp', o) #start augmenting and save augmented image (it will - amongst others - include the name "a" of the image that was used for augmentation, 
-            #amongst others to make sure it has the "NG" or "OK" in the filename, so that it can later be used for training the neural network - if needed)
+            #for example to make sure it has the "NG" or "OK" in the filename, so that it can later be used for training the neural network - if needed)
         else: break
 print("Image augmentation finished!")
