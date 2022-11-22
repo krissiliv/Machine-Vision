@@ -52,7 +52,7 @@ Then you can open the Code and in line 25, you can choose which name your model 
 
 In line 29 you can choose the number of training epochs.
 
-When you then compile the Code, it will give you a plot, where the horizontal axis represents the (numbered) test images and the values on the vertical axis (0 or 1) represent whether (1) or not (2) the prediction/classification of this test image was good.
+When you then compile the Code, it will give you a plot, where the horizontal axis represents the (numbered) test images and the values on the vertical axis (0 or 1) represent whether (1) or not (0) the prediction/classification of this test image was good.
 
 
         
