@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Created
 
-@author: e14
 """
+
+@author: PiaGober
+"""
+#First, the necessary packages are imported:
 
 import torch
 import matplotlib.pyplot as plt
