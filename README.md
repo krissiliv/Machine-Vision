@@ -34,4 +34,18 @@ If one of these images with number 1-5 is assined the number 1, which is the rep
 The analogeous thing happens to the testimages with numbers 6-10 (the good cookies).
 
 Finally the performance of the model is plotted in order to be able to decide how good it is. The x-axis represents the test-images and the y-axis represents the outcome (whether the prediction was wrong or correct).
+
+_______________________________________________________________________________________________________________________________________
+How can this Code be used? A step-by step guide.
+
+---The setup ---
+Create a folder, where you save this Code-file. You can name it as you like but for referring reasons and to make the below describtion easier I name it "Folder1".
+
+In Folder1, create another folder named "Test_AUGMENTED". This will be the test-images. It should contain 10 images, numbered from 1-10. The pictures 1-5 should have broken objects on them. The pictures with number 6-10 should show not-broken objects.
+
+Also in Folder one, create a folder named "Train" where you save a good mix between broken and not-broken objects. The more the better.
+
+
+
+
         
