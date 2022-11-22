@@ -36,7 +36,7 @@ The analogeous thing happens to the testimages with numbers 6-10 (the good cooki
 Finally the performance of the model is plotted in order to be able to decide how good it is. The x-axis represents the test-images and the y-axis represents the outcome (whether the prediction was wrong or correct).
 
 _______________________________________________________________________________________________________________________________________
-How can this Code script.py be used? A step-by step guide.
+How can this Code script.py be used? A step-by-step guide.
 
 ---The setup ---
 
