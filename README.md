@@ -39,12 +39,14 @@ ________________________________________________________________________________
 How can this Code be used? A step-by step guide.
 
 ---The setup ---
+
 Create a folder, where you save this Code-file. You can name it as you like but for referring reasons and to make the below describtion easier I name it "Folder1".
 
 In Folder1, create another folder named "Test_AUGMENTED". This will be the test-images. It should contain 10 images, numbered from 1-10. The pictures 1-5 should have broken objects on them. The pictures with number 6-10 should show not-broken objects.
 
 Also in Folder one, create a folder named "Train" where you save a good mix between broken and not-broken objects. The more the better.
 
+---The Code ---
 Then you can open the Code and in line 25, you can choose which name your model should have. If you later want to create a new model, you should choose a non-existing name. The model will as well be solved in "Folder1".
 
 In line 29 you can choose the number of training epochs.
