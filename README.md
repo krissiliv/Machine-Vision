@@ -45,7 +45,11 @@ In Folder1, create another folder named "Test_AUGMENTED". This will be the test-
 
 Also in Folder one, create a folder named "Train" where you save a good mix between broken and not-broken objects. The more the better.
 
-Then you can open the Code and in line 25, you can choose which name your model should have.
+Then you can open the Code and in line 25, you can choose which name your model should have. If you later want to create a new model, you should choose a non-existing name. The model will as well be solved in "Folder1".
+
+In line 29 you can choose the number of training epochs.
+
+When you then compile the Code, it will give you a plot, where the horizontal axis represents the (numbered) test images and the values on the vertical axis (0 or 1) represent whether (1) or not (2) the prediction/classification of this test image was good.
 
 
         
