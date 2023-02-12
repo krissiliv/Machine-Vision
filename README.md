@@ -2,10 +2,10 @@
 The goal of the project was to train a neural network to recognize whether or not a Waffle is broken.
 
 First, I fix the name of the model. If the model name is non-existent, then a new model with the provided name is created automatically.
-Then I fix the training set and the test set, which I chose to be the set of artificially cretaed pictures (Code see "augmented" file), as well as the number of training sessions.
+Then I fix the training set and the test set, which I chose to be the set of artificially created pictures (Code see "augmented" file), as well as the number of training sessions.
 Next, the used data needs to be normalized. A new (empty) list for the training-data is created (as a list of batches) as well as a target list, such that the pictured can be labelled. 
 I fix the directory and make sure that there is no unnecessary ".ini" file in it (due to the augmentor that I used). 
-files = listdir(imagesdirpath) #hier habe ich anfangs den Fehler gemacht, das zip-file nicht zu entpacken, daher hat es den Pfad nicht erkannt.
+
 If the model does not already exist, then a model has to be created. It should obtain a list with all files, take a random element out of it (remove it from the list such that it is not used again), open this element (file), transform it to the grayscale and then to a tensor (to make it possible for the neural network to work with it). Subsequently the obtianed tensor is added to the training list.
 
 Now it needs to be fixed how the trainingset should be iterpreted from the model: I put a "NG" in the filename when the Waffle is not broken, in this case it should be assigned the number 1 for "HatRiss", as this is true in this case. If it is assigned the number 0 for "HatRiss" then is is not broken and has the letters "OK" in the filename. Analogeously this will hold for "HatkeinenRiss". The output (target) will be then appended to the list of "loaded images". Afterwards everything will be concluded into a final list, where the training data list is stacked to the list of outputs. So each image is assigned its output, in form of a "batch".
